@@ -1,2 +1,12 @@
 # Mini-Project1
-Repo to manage machine provisioning
+    ##  This Repo will manage IaC for Machine provisioning for Mini-Project1
+    
+# Steps required to use Terraform 
+    ## We use Terraform to Provision the 
+        ### Terraform Init
+        ### Terraform Plan
+        ### Terraform Apply
+
+
+
+
