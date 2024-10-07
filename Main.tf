@@ -140,7 +140,7 @@ resource "aws_instance" "Database" {
 
 
 
-variable "region_number" {
+variable "region_number1" {
   # Arbitrary mapping of region name to number to use in
   # a VPC's CIDR prefix.
   default = {
