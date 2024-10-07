@@ -132,7 +132,7 @@ resource "aws_instance" "Database" {
   instance_type          = var.Database_instance_type
   key_name               = var.Database_key_name
   #user_data              = file("./Database-install.sh")
-  vpc_security_group_ids = [aws_security_group.backend-sg.id]
+  vpc_security_group_ids = [aws_security_group.Database-sg.id]
   tags = {
     Name = "Database"
   }
@@ -144,11 +144,9 @@ variable "region_number" {
   # Arbitrary mapping of region name to number to use in
   # a VPC's CIDR prefix.
   default = {
-    us-east-1      = 1
-    us-west-1      = 2
-    us-west-2      = 3
-    eu-central-1   = 4
-    ap-northeast-1 = 5
+    eu-east-1      = 1
+    eu-west-2      = 2
+    eu-west-3      = 3
   }
 }
 
@@ -158,16 +156,13 @@ variable "az_number" {
     a = 1
     b = 2
     c = 3
-    d = 4
-    e = 5
-    f = 6
   }
 }
 
 # Retrieve the AZ where we want to create network resources
 # This must be in the region selected on the AWS provider.
 data "aws_availability_zone" "example" {
-  name = "eu-central-1a"
+  name = "eu-west-1a"
 }
 
 # Create a VPC for the region associated with the AZ
