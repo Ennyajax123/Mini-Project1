@@ -216,49 +216,43 @@ resource "aws_instance" "database-1" {
   user_data              = file("./Database-install.sh")
   vpc_security_group_ids = [aws_security_group.database-1-sg.id]
   tags = {
-    Name = "Database-1"
+    Name = "database-1"
   }
 }
 
-# creating the Database system
-resource "aws_security_group" "database-2-sg" {
-  name = "MProj1-Database-2-sg"
-  # ... other configuration ...
+# creating RDS system using Terraform
+resource "aws_vpc" "mainvpc" {
+  cidr_block = "10.1.0.0/16"
+}
+
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.mainvpc.id
+
+  ingress {
+    protocol  = -1
+    self      = true
+    from_port = 0
+    to_port   = 0
+  }
 
   egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  ingress {
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-  ingress {
-    from_port        = 3306
-    to_port          = 3306
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
-resource "aws_instance" "database-2" {
-  ami                    = var.database-2_ami
-  instance_type          = var.database-2_instance_type
-  availability_zone      = "eu-west-2b"
-  key_name               = var.database-2_key_name
-  user_data              = file("./Database-install.sh")
-  vpc_security_group_ids = [aws_security_group.database-2-sg.id]
-  tags = {
-    Name = "Database-2"
-  }
+
+resource "aws_db_instance" "default" {
+  allocated_storage    = 10
+  engine               = "mysql"
+  engine_version       = "5.7"
+  instance_class       = "db.t3.micro"
+  username             = "foo"
+  password             = "foobarbaz"
+  parameter_group_name = "default.mysql5.7"
+  skip_final_snapshot  = true
 }
 variable "region_number1" {
   # Arbitrary mapping of region name to number to use in
