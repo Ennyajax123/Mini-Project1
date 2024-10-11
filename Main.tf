@@ -2,15 +2,20 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.16"
+      version = ">4.16"
+      required_version  =">1.2.0"
     }
   }
-
-  required_version = ">= 1.2.0"
 }
 
+# Configure the AWS Provider
 provider "aws" {
   region = "eu-west-2"
+}
+
+# Create a VPC
+resource "aws_vpc" "example1" {
+  cidr_block = "10.0.0.0/16"
 }
 
 # creating the frontend system
@@ -150,7 +155,7 @@ variable "region_number1" {
   }
 }
 
-variable "az_number" {
+variable "AD_number1" {
   # Assign a number to each AZ letter used in our configuration
   default = {
     a = 1
@@ -162,16 +167,16 @@ variable "az_number" {
 # Retrieve the AZ where we want to create network resources
 # This must be in the region selected on the AWS provider.
 data "aws_availability_zone" "example" {
-  name = "eu-west-1a"
-}
+  name = "eu-west-2a"
+  }
 
 # Create a VPC for the region associated with the AZ
 resource "aws_vpc" "example" {
-  cidr_block = cidrsubnet("10.0.0.0/8", 4, var.region_number[data.aws_availability_zone.example.region])
+  cidr_block = cidrsubnet ("10.0.0.0/16", 4, var.region_number[data.aws_availability_zone.example.region])
 }
 
 # Create a subnet for the AZ within the regional VPC
 resource "aws_subnet" "example" {
   vpc_id     = aws_vpc.example.id
-  cidr_block = cidrsubnet(aws_vpc.example.cidr_block, 4, var.az_number[data.aws_availability_zone.example.name_suffix])
+  cidr_block = cidrsubnet(aws_vpc.example.cidr_block, 4, var.AD_number[data.aws_availability_zone.example.name_suffix])
 }
