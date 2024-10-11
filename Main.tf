@@ -2,23 +2,6 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-<<<<<<< HEAD
-      version = "5.70.0"
-    }
-  }
-}
-provider "aws" {
-  region = "eu-west-2"
-}
-# Create a VPC
-resource "aws_vpc" "example1" {
-  cidr_block = "10.0.0.0/16"
-}
-# creating the frontend system
-
-resource "aws_security_group" "frontend-1-sg" {
-  name = "MProj1-frontend-1-sg"
-=======
       version = "~> 4.16"
     }
   }
@@ -34,7 +17,6 @@ provider "aws" {
 
 resource "aws_security_group" "frontend-sg" {
   name = "MProj1-frontend-sg"
->>>>>>> 78e9654b6043f84e83356a05f9eaca2393eede72
   # ... other configuration ...
 
   egress {
