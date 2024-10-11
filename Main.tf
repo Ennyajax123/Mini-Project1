@@ -86,10 +86,10 @@ resource "aws_security_group" "frontend-2-sg" {
 }
 
 resource "aws_instance" "frontend-2" {
-  ami               = var.frontend-2_ami
-  instance_type     = var.frontend-2_instance_type
-  availability_zone = "eu-west-2b"
-  key_name          = var.frontend-2_key_name
+  ami                    = var.frontend-2_ami
+  instance_type          = var.frontend-2_instance_type
+  availability_zone      = "eu-west-2b"
+  key_name               = var.frontend-2_key_name
   user_data              = file("./frontend-install.sh")
   vpc_security_group_ids = [aws_security_group.frontend-2-sg.id]
   tags = {
@@ -127,10 +127,10 @@ resource "aws_security_group" "backend-1-sg" {
 }
 
 resource "aws_instance" "backend-1" {
-  ami               = var.backend-1_ami
-  instance_type     = var.backend-1_instance_type
-  availability_zone = "eu-west-2a"
-  key_name          = var.backend-1_key_name
+  ami                    = var.backend-1_ami
+  instance_type          = var.backend-1_instance_type
+  availability_zone      = "eu-west-2a"
+  key_name               = var.backend-1_key_name
   user_data              = file("./backend-install.sh")
   vpc_security_group_ids = [aws_security_group.backend-1-sg.id]
   tags = {
@@ -167,10 +167,10 @@ resource "aws_security_group" "backend-2-sg" {
   }
 }
 resource "aws_instance" "backend-2" {
-  ami               = var.backend-2_ami
-  instance_type     = var.backend-2_instance_type
-  availability_zone = "eu-west-2b"
-  key_name          = var.backend-2_key_name
+  ami                    = var.backend-2_ami
+  instance_type          = var.backend-2_instance_type
+  availability_zone      = "eu-west-2b"
+  key_name               = var.backend-2_key_name
   user_data              = file("./backend-install.sh")
   vpc_security_group_ids = [aws_security_group.backend-2-sg.id]
   tags = {
@@ -209,10 +209,10 @@ resource "aws_security_group" "database-1-sg" {
 }
 
 resource "aws_instance" "database-1" {
-  ami               = var.database-1_ami
-  instance_type     = var.database-1_instance_type
-  availability_zone = "eu-west-2a"
-  key_name          = var.database-1_key_name
+  ami                    = var.database-1_ami
+  instance_type          = var.database-1_instance_type
+  availability_zone      = "eu-west-2a"
+  key_name               = var.database-1_key_name
   user_data              = file("./Database-install.sh")
   vpc_security_group_ids = [aws_security_group.database-1-sg.id]
   tags = {
@@ -250,10 +250,10 @@ resource "aws_security_group" "database-2-sg" {
 }
 
 resource "aws_instance" "database-2" {
-  ami               = var.database-2_ami
-  instance_type     = var.database-2_instance_type
-  availability_zone = "eu-west-2b"
-  key_name          = var.database-2_key_name
+  ami                    = var.database-2_ami
+  instance_type          = var.database-2_instance_type
+  availability_zone      = "eu-west-2b"
+  key_name               = var.database-2_key_name
   user_data              = file("./Database-install.sh")
   vpc_security_group_ids = [aws_security_group.database-2-sg.id]
   tags = {
