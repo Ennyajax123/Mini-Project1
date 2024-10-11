@@ -2,6 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
+<<<<<<< HEAD
       version = "5.70.0"
     }
   }
@@ -17,6 +18,23 @@ resource "aws_vpc" "example1" {
 
 resource "aws_security_group" "frontend-1-sg" {
   name = "MProj1-frontend-1-sg"
+=======
+      version = "~> 4.16"
+    }
+  }
+
+  required_version = ">= 1.2.0"
+}
+
+provider "aws" {
+  region = "eu-west-2"
+}
+
+# creating the frontend system
+
+resource "aws_security_group" "frontend-sg" {
+  name = "MProj1-frontend-sg"
+>>>>>>> 78e9654b6043f84e83356a05f9eaca2393eede72
   # ... other configuration ...
 
   egress {
@@ -43,6 +61,7 @@ resource "aws_security_group" "frontend-1-sg" {
   }
 }
 
+<<<<<<< HEAD
 resource "aws_instance" "frontend-1" {
   ami                    = var.frontend-1_ami
   instance_type          = var.frontend-1_instance_type
@@ -100,6 +119,24 @@ resource "aws_instance" "frontend-2" {
 # creating the backend system
 resource "aws_security_group" "backend-1-sg" {
   name = "MProj1-backend-1-sg"
+=======
+resource "aws_instance" "front-end" {
+  ami                    = var.frontend_ami
+  instance_type          = var.frontend_instance_type
+  key_name               = var.frontend_key_name
+  user_data              = file("./frontend-install.sh")
+  vpc_security_group_ids = [aws_security_group.frontend-sg.id]
+  tags = {
+    Name = "front-end"
+  }
+}
+
+
+
+# creating the backend system
+resource "aws_security_group" "backend-sg" {
+  name = "MProj1-backend-sg"
+>>>>>>> 78e9654b6043f84e83356a05f9eaca2393eede72
   # ... other configuration ...
 
   egress {
@@ -126,6 +163,7 @@ resource "aws_security_group" "backend-1-sg" {
   }
 }
 
+<<<<<<< HEAD
 resource "aws_instance" "backend-1" {
   ami                    = var.backend-1_ami
   instance_type          = var.backend-1_instance_type
@@ -182,6 +220,24 @@ resource "aws_instance" "backend-2" {
 # creating the Database system
 resource "aws_security_group" "database-1-sg" {
   name = "MProj1-Database-1-sg"
+=======
+resource "aws_instance" "backend" {
+  ami                    = var.backend_ami
+  instance_type          = var.backend_instance_type
+  key_name               = var.backend_key_name
+  #user_data              = file("./backend-install.sh")
+  vpc_security_group_ids = [aws_security_group.backend-sg.id]
+  tags = {
+    Name = "backend"
+  }
+}
+
+
+
+# creating the Database system
+resource "aws_security_group" "Database-sg" {
+  name = "MProj1-Database-sg"
+>>>>>>> 78e9654b6043f84e83356a05f9eaca2393eede72
   # ... other configuration ...
 
   egress {
@@ -208,6 +264,7 @@ resource "aws_security_group" "database-1-sg" {
   }
 }
 
+<<<<<<< HEAD
 resource "aws_instance" "database-1" {
   ami                    = var.database-1_ami
   instance_type          = var.database-1_instance_type
@@ -275,3 +332,15 @@ variable "AZ_number1" {
 
 
 
+=======
+resource "aws_instance" "Database" {
+  ami                    = var.Database_ami
+  instance_type          = var.Database_instance_type
+  key_name               = var.Database_key_name
+  #user_data              = file("./Database-install.sh")
+  vpc_security_group_ids = [aws_security_group.backend-sg.id]
+  tags = {
+    Name = "Database"
+  }
+}
+>>>>>>> 78e9654b6043f84e83356a05f9eaca2393eede72
