@@ -3,9 +3,10 @@
     
 # Steps required to use Terraform 
     ## We use Terraform to Provision the 
-        ### Terraform Init
-        ### Terraform Plan
-        ### Terraform Apply
+        ## Terraform Init
+        ## Terraform fmt
+        ## Terraform Plan --var-file="var.tvars"
+        ## Terraform Apply --var-file="var.tvars"
 
 
 
