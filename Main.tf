@@ -246,14 +246,14 @@ resource "aws_default_security_group" "default" {
 
 
 resource "aws_db_instance" "default" {
-  allocated_storage    = 10
-  engine               = "mysql"
-  engine_version       = "5.7"
-  instance_class       = "db.t3.micro"
-  username             = "foo"
-  password             = "foobarbaz"
-  parameter_group_name = "default.mysql5.7"
-  skip_final_snapshot  = true
+  allocated_storage      = 10
+  engine                 = "mysql"
+  engine_version         = "5.7"
+  instance_class         = "db.t3.micro"
+  parameter_group_name   = "default.mysql5.7"
+  availability_zone      = "eu-west-2"
+  skip_final_snapshot    = true
+  publicly_accessible    = true
 }
 variable "region_number1" {
   # Arbitrary mapping of region name to number to use in

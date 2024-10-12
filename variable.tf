@@ -18,3 +18,4 @@ variable "frontend-2_ami" {}
 variable "database-2_key_name" {}
 variable "database-2_instance_type" {}
 variable "database-2_ami" {}
+
