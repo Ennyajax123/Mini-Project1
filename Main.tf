@@ -1,4 +1,3 @@
-
 terraform {
   required_providers {
     aws = {
@@ -8,12 +7,17 @@ terraform {
   }
 }
 provider "aws" {
-  region = "eu-west-2"
+  region  = var.region
 }
 # Create a VPC
-resource "aws_vpc" "example1" {
-  cidr_block = "10.0.0.0/16"
-}
+# resource "aws_vpc" "my-project-vpc" {
+#   cidr_block       = "10.0.0.0/16"
+#   instance_tenancy = "default"
+
+#   tags = {
+#     Name = "main"
+#   }
+# }
 # creating the frontend system
 
 resource "aws_security_group" "frontend-1-sg" {
@@ -45,10 +49,10 @@ resource "aws_security_group" "frontend-1-sg" {
 }
 
 resource "aws_instance" "frontend-1" {
-  ami                    = var.frontend-1_ami
-  instance_type          = var.frontend-1_instance_type
-  availability_zone      = "eu-west-2b"
-  key_name               = var.frontend-1_key_name
+  ami                    = var.ami
+  instance_type          = var.instance_type
+  availability_zone      = "eu-west-2a"
+  key_name               = var.key_name
   user_data              = file("./frontend-install.sh")
   vpc_security_group_ids = [aws_security_group.frontend-1-sg.id]
   tags = {
@@ -87,10 +91,10 @@ resource "aws_security_group" "frontend-2-sg" {
 }
 
 resource "aws_instance" "frontend-2" {
-  ami                    = var.frontend-2_ami
-  instance_type          = var.frontend-2_instance_type
+  ami                    = var.ami
+  instance_type          = var.instance_type
   availability_zone      = "eu-west-2b"
-  key_name               = var.frontend-2_key_name
+  key_name               = var.key_name
   user_data              = file("./frontend-install.sh")
   vpc_security_group_ids = [aws_security_group.frontend-2-sg.id]
   tags = {
@@ -128,10 +132,10 @@ resource "aws_security_group" "backend-1-sg" {
 }
 
 resource "aws_instance" "backend-1" {
-  ami                    = var.backend-1_ami
-  instance_type          = var.backend-1_instance_type
+  ami                    = var.ami
+  instance_type          = var.instance_type
   availability_zone      = "eu-west-2a"
-  key_name               = var.backend-1_key_name
+  key_name               = var.key_name
   user_data              = file("./backend-install.sh")
   vpc_security_group_ids = [aws_security_group.backend-1-sg.id]
   tags = {
@@ -168,10 +172,10 @@ resource "aws_security_group" "backend-2-sg" {
   }
 }
 resource "aws_instance" "backend-2" {
-  ami                    = var.backend-2_ami
-  instance_type          = var.backend-2_instance_type
+  ami                    = var.ami
+  instance_type          = var.instance_type
   availability_zone      = "eu-west-2b"
-  key_name               = var.backend-2_key_name
+  key_name               = var.key_name
   user_data              = file("./backend-install.sh")
   vpc_security_group_ids = [aws_security_group.backend-2-sg.id]
   tags = {
@@ -210,10 +214,10 @@ resource "aws_security_group" "database-1-sg" {
 }
 
 resource "aws_instance" "database-1" {
-  ami                    = var.database-1_ami
-  instance_type          = var.database-1_instance_type
+  ami                    = var.ami
+  instance_type          = var.instance_type
   availability_zone      = "eu-west-2a"
-  key_name               = var.database-1_key_name
+  key_name               = var.key_name
   user_data              = file("./Database-install.sh")
   vpc_security_group_ids = [aws_security_group.database-1-sg.id]
   tags = {
@@ -243,19 +247,41 @@ resource "aws_default_security_group" "default" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+# resource "aws_db_subnet_group" "default" {
+#   name       = "main"
+#   subnet_ids = [aws_subnet.frontend.id, aws_subnet.backend.id]
 
+#   tags = {
+#     Name = "My DB subnet group"
+#   }
+# }
 
 resource "aws_db_instance" "default" {
-  allocated_storage      = 10
-  engine                 = "mysql"
-  engine_version         = "5.7"
-  instance_class         = "db.t3.micro"
-  parameter_group_name   = "default.mysql5.7"
-  availability_zone      = "eu-west-2"
-  skip_final_snapshot    = true
+  allocated_storage    = 10
+  db_name              = "mydb"
+  engine               = "mysql"
+  engine_version       = "8.0"
+  instance_class       = "db.t3.micro"
+  username             = "eniola"
+  password             = "eniola123"
+  parameter_group_name = "default.mysql8.0"
+  skip_final_snapshot  = true
+
   publicly_accessible    = true
 }
-variable "region_number1" {
+
+
+# resource "aws_db_instance" "default" {
+#   allocated_storage      = 10
+#   engine                 = "mysql"
+#   engine_version         = "5.7"
+#   instance_class         = "db.t3.micro"
+#   parameter_group_name   = "default.mysql5.7"
+#   availability_zone      = "eu-west-2"
+#   skip_final_snapshot    = true
+#   publicly_accessible    = true
+# }
+variable "region" {
   # Arbitrary mapping of region name to number to use in
   # a VPC's CIDR prefix.
   default = {
